@@ -1,5 +1,7 @@
 package com.unixcraft.limitedcompanytax;
 
+import com.unixcraft.limitedcompanytax.util.TaxStatics;
+
 import java.math.BigDecimal;
 
 /**
@@ -7,108 +9,58 @@ import java.math.BigDecimal;
  */
 public class DividendTax {
 
-    private BigDecimal baseRate = new BigDecimal("7.5");
-    private BigDecimal higherRate = new BigDecimal("32.5");
-    private BigDecimal additionalRate = new BigDecimal("38.1");
-
-    private BigDecimal yearlyDividendAllowance = new BigDecimal("5000");
-
-    private BigDecimal startBaseRateBand = yearlyDividendAllowance;
-    private BigDecimal endOfBaseRateBand = new BigDecimal("31865");
-
-    private BigDecimal startHigherRateBand = new BigDecimal("31866");
-    private BigDecimal endOfHigherRateBand = new BigDecimal("150000");
-
-    private BigDecimal startAdditionalRateBand = new BigDecimal("150001");
-    private BigDecimal endOfAdditionalRateBand = new BigDecimal("99999999");
-
-
-    private BigDecimal baseRateMaxTaxable = endOfBaseRateBand.subtract(startBaseRateBand);
-    private BigDecimal highRateMaxTaxable = (endOfHigherRateBand.subtract(startHigherRateBand)).add(new BigDecimal("1"));
-    private BigDecimal additionalRateMaxTaxable = (endOfAdditionalRateBand.subtract(startAdditionalRateBand)).add(new BigDecimal("1"));
-
+    private final BigDecimal baseRateMaxTaxable = TaxStatics.END_OF_BASE_RATE_BAND.subtract(TaxStatics.START_BASE_RATE_BAND);
+    private final BigDecimal highRateMaxTaxable = (TaxStatics.END_OF_HIGHER_RATE_BAND.subtract(TaxStatics.START_HIGHER_RATE_BAND)).add(new BigDecimal("1"));
+    private BigDecimal additionalRateMaxTaxable = (TaxStatics.END_OF_ADDITIONAL_RATE_BAND.subtract(TaxStatics.START_ADDITIONAL_RATE_BAND)).add(new BigDecimal("1"));
 
     public DividendTaxBreakdown DividendTaxTotal(Integer numberOfShareholders, BigDecimal monthlyProfitAfterCorpTax) {
-
-        DividendTaxBreakdown DividendYearlyTaxBreakdown = DividendYearlyTaxBreakdown(numberOfShareholders, monthlyProfitAfterCorpTax);
-
-
-        return DividendYearlyTaxBreakdown;
-
+        return DividendYearlyTaxBreakdown(numberOfShareholders, monthlyProfitAfterCorpTax);
     }
 
-    public DividendTaxBreakdown DividendYearlyTaxBreakdown(Integer numberOfShareholders, BigDecimal yearlyProfitAfterCorpTax) {
+    private DividendTaxBreakdown DividendYearlyTaxBreakdown(Integer numberOfShareholders, BigDecimal yearlyProfitAfterCorpTax) {
+
         BigDecimal baseRateTaxAmount;
         BigDecimal highRateTaxAmount;
         BigDecimal additionalRateTaxAmount;
-
-        DividendTaxBreakdown D = null;
-
-        BigDecimal grossDividendYearly;
-
-        BigDecimal dividendAllowanceYearly;
-
-        BigDecimal taxableDividendYearly;
-
-
         BigDecimal aboveEndOfBaseRateBand;
-
-
         BigDecimal aboveAdditionalRate;
 
+        DividendTaxBreakdown dividendTaxBreakdown = null;
+
        // Ensure the number of users is part of the return results object!!!
-        grossDividendYearly = yearlyProfitAfterCorpTax;
-
-        BigDecimal perShareHolder = grossDividendYearly.divide(new BigDecimal(numberOfShareholders));
-
-        taxableDividendYearly = perShareHolder.subtract(startBaseRateBand);
-
+        BigDecimal taxableDividendYearly = yearlyProfitAfterCorpTax.divide(new BigDecimal(numberOfShareholders))
+                .subtract(TaxStatics.START_BASE_RATE_BAND);
 
         if (taxableDividendYearly.compareTo(baseRateMaxTaxable) <= 0) {
 
-            baseRateTaxAmount = baseRateTax(taxableDividendYearly);
+            baseRateTaxAmount = getRateTax(TaxStatics.BASE_RATE, taxableDividendYearly);
 
-            D = new DividendTaxBreakdown(baseRateTaxAmount, taxableDividendYearly);
+            dividendTaxBreakdown = new DividendTaxBreakdown(baseRateTaxAmount, taxableDividendYearly);
         }
 
-        if (taxableDividendYearly.compareTo(baseRateMaxTaxable) > 0 && taxableDividendYearly.compareTo(endOfHigherRateBand) <= 0) {
+        if (taxableDividendYearly.compareTo(baseRateMaxTaxable) > 0 && taxableDividendYearly.compareTo(TaxStatics.END_OF_HIGHER_RATE_BAND) <= 0) {
             aboveEndOfBaseRateBand = taxableDividendYearly.subtract(baseRateMaxTaxable);
-            baseRateTaxAmount = baseRateTax(baseRateMaxTaxable);
-            highRateTaxAmount = highRateTax(aboveEndOfBaseRateBand);
+            baseRateTaxAmount = getRateTax(TaxStatics.BASE_RATE, baseRateMaxTaxable);
+            highRateTaxAmount = getRateTax(TaxStatics.HIGHER_RATE, aboveEndOfBaseRateBand);
 
-            D = new DividendTaxBreakdown(baseRateTaxAmount, highRateTaxAmount, taxableDividendYearly);
+            dividendTaxBreakdown = new DividendTaxBreakdown(baseRateTaxAmount, highRateTaxAmount, taxableDividendYearly);
         }
 
-        if (taxableDividendYearly.add(startBaseRateBand).compareTo(startAdditionalRateBand) >= 0) {
+        if (taxableDividendYearly.add(TaxStatics.START_BASE_RATE_BAND).compareTo(TaxStatics.START_ADDITIONAL_RATE_BAND) >= 0) {
             aboveAdditionalRate = taxableDividendYearly.subtract(baseRateMaxTaxable.add(highRateMaxTaxable));
 
-            baseRateTaxAmount = baseRateTax(baseRateMaxTaxable);
-            highRateTaxAmount = highRateTax(highRateMaxTaxable);
-            additionalRateTaxAmount = additionalRateTax(aboveAdditionalRate);
+            baseRateTaxAmount = getRateTax(TaxStatics.BASE_RATE, baseRateMaxTaxable);
+            highRateTaxAmount = getRateTax(TaxStatics.HIGHER_RATE, highRateMaxTaxable);
+            additionalRateTaxAmount = getRateTax(TaxStatics.ADDITIONAL_RATE, aboveAdditionalRate);
 
-            D = new DividendTaxBreakdown(baseRateTaxAmount, highRateTaxAmount, additionalRateTaxAmount, taxableDividendYearly);
-
+            dividendTaxBreakdown = new DividendTaxBreakdown(baseRateTaxAmount, highRateTaxAmount, additionalRateTaxAmount, taxableDividendYearly);
         }
-        
-        return D;
+        return dividendTaxBreakdown;
     }
 
-    public BigDecimal baseRateTax(BigDecimal baseTaxableDividendYearly) {
-        BigDecimal baseRateTaxAmount;
-        baseRateTaxAmount = baseTaxableDividendYearly.divide(new BigDecimal("100")).multiply(baseRate);
-        return baseRateTaxAmount;
+    private BigDecimal getRateTax(BigDecimal rate, BigDecimal taxableDividend) {
+        return taxableDividend.divide(new BigDecimal("100")).multiply(rate);
     }
 
-    public BigDecimal highRateTax(BigDecimal HigherTaxableDividendYearly) {
-        BigDecimal highRateTaxAmount;
-        highRateTaxAmount = HigherTaxableDividendYearly.divide(new BigDecimal("100")).multiply(higherRate);
-        return highRateTaxAmount;
-    }
-
-    public BigDecimal additionalRateTax(BigDecimal additionlTaxableDividendYearly) {
-        BigDecimal additionalRateTaxAmount;
-        additionalRateTaxAmount = additionlTaxableDividendYearly.divide(new BigDecimal("100")).multiply(additionalRate);
-        return additionalRateTaxAmount;
-    }
 }
 

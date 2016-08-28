@@ -7,9 +7,9 @@ import java.math.BigDecimal;
  */
 public class DividendTaxBreakdown {
 
-    private BigDecimal dividendTaxAmountYearly;
-    private BigDecimal taxableDividendYearly;
-    private BigDecimal dividendAfterTaxYearly;
+    private final BigDecimal dividendTaxAmountYearly;
+    private final BigDecimal taxableDividendYearly;
+    private final BigDecimal dividendAfterTaxYearly;
 
     public DividendTaxBreakdown(BigDecimal baseRateTaxAmount, BigDecimal taxableDividendYearly) {
 
