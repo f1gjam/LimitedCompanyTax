@@ -16,13 +16,13 @@ public class testBaseRateDividendTax {
 
     @Before
     public void setUp(){
-        unit = new DividendTax();
+        unit = new DividendTax(2, new BigDecimal("39922.46"));
     }
 
     @Test
     public void testDividendBaseRateTaxAfterTaxedIncomeMonthly(){
 
-        DividendTaxBreakdown dividendTax = unit.DividendTaxTotal(2, new BigDecimal("39922.46"));
+        DividendTaxBreakdown dividendTax = unit.DividendYearlyTaxBreakdown();
 
         Assert.assertEquals(new BigDecimal("1122.09"), dividendTax.getdividendTaxAmountYearly());
         Assert.assertEquals(new BigDecimal("14961.23"), dividendTax.gettaxableDividendYearly());

@@ -10,10 +10,18 @@ public class CorporationTax {
 
     private static final BigDecimal smallProfitsRate = new BigDecimal("20");
     private static final BigDecimal smallprofitsThreshold = new BigDecimal("300000");
+    private BigDecimal businessIncomeMonthly = BigDecimal.ZERO;
+    private BigDecimal businessExpenses = BigDecimal.ZERO;
 
 
+    public CorporationTax(BigDecimal businessIncomeMonthly, BigDecimal businessExpenses) {
 
-    public CorpTaxBreakdown calculateCorpTax(BigDecimal businessIncomeMonthly, BigDecimal businessExpenses){
+        this.businessIncomeMonthly = businessIncomeMonthly;
+        this.businessExpenses = businessExpenses;
+
+    }
+
+    public CorpTaxBreakdown calculateCorpTax(){
 
         BigDecimal yearlyIncome = businessIncomeMonthly.multiply(new BigDecimal("12"));
         BigDecimal yearlyExpenses = businessExpenses.multiply(new BigDecimal("12"));

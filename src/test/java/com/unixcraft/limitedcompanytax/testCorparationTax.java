@@ -16,13 +16,13 @@ public class testCorparationTax {
 
     @Before
     public void setUp(){
-        unit = new CorporationTax();
+        unit = new CorporationTax(new BigDecimal("7000"), new BigDecimal("2841.41"));
     }
 
     @Test
     public void testProfitAfterTaxForBusinessIncomeMonthlyOf7000(){
 
-        CorpTaxBreakdown corpTaxBreakdown = unit.calculateCorpTax(new BigDecimal("7000"), new BigDecimal("2841.41"));
+        CorpTaxBreakdown corpTaxBreakdown = unit.calculateCorpTax();
 
         Assert.assertEquals(new BigDecimal("831.72"), corpTaxBreakdown.getCorporationTaxMonthly());
         Assert.assertEquals(new BigDecimal("3326.87"), corpTaxBreakdown.getProfitAfterCorpTax());

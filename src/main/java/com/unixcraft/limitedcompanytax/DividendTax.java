@@ -27,17 +27,18 @@ public class DividendTax {
     private BigDecimal highRateMaxTaxable = (endOfHigherRateBand.subtract(startHigherRateBand)).add(new BigDecimal("1"));
     private BigDecimal additionalRateMaxTaxable = (endOfAdditionalRateBand.subtract(startAdditionalRateBand)).add(new BigDecimal("1"));
 
-
-    public DividendTaxBreakdown DividendTaxTotal(Integer numberOfShareholders, BigDecimal monthlyProfitAfterCorpTax) {
-
-        DividendTaxBreakdown DividendYearlyTaxBreakdown = DividendYearlyTaxBreakdown(numberOfShareholders, monthlyProfitAfterCorpTax);
+    private Integer numberOfShareholders;
+    private BigDecimal yearlyProfitAfterCorpTax;
 
 
-        return DividendYearlyTaxBreakdown;
+    public DividendTax(Integer numberOfShareholders, BigDecimal yearlyProfitAfterCorpTax) {
+
+        this.numberOfShareholders = numberOfShareholders;
+        this.yearlyProfitAfterCorpTax = yearlyProfitAfterCorpTax;
 
     }
 
-    public DividendTaxBreakdown DividendYearlyTaxBreakdown(Integer numberOfShareholders, BigDecimal yearlyProfitAfterCorpTax) {
+    public DividendTaxBreakdown DividendYearlyTaxBreakdown() {
         BigDecimal baseRateTaxAmount;
         BigDecimal highRateTaxAmount;
         BigDecimal additionalRateTaxAmount;
