@@ -1,5 +1,6 @@
 package com.unixcraft.limitedcompanytax;
 
+import com.unixcraft.limitedcompanytax.util.TaxStatics;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +17,7 @@ public class testCorparationTax {
 
     @Before
     public void setUp(){
-        unit = new CorporationTax(new BigDecimal("7000"), new BigDecimal("2841.41"));
+        unit = new CorporationTax(new BigDecimal("7000"), TaxStatics.TOTAL_EXPENSES_MONTHLY);
     }
 
     @Test
