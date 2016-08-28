@@ -6,33 +6,23 @@ import java.math.BigDecimal;
  * Created by kali on 21/08/2016.
  */
 public class BusinessIncome {
-    private BigDecimal dailyRate = new BigDecimal("350");
-    private BigDecimal monthlyIncome;
-    private Integer daysInMonth;
+    private static BigDecimal dailyRate = BigDecimal.ZERO;
+    private static BigDecimal monthlyIncome  = BigDecimal.ZERO;
+    private static Integer daysWorkedInMonth;
+    private static Integer numberOfShareholders;
 
-    public Integer getDaysInMonth() {
-        return daysInMonth;
+    public BusinessIncome(Integer numberOfShareholders, Integer daysWorkedInMonth, BigDecimal dailyRate) {
+
+        this.numberOfShareholders = numberOfShareholders;
+        this.daysWorkedInMonth = daysWorkedInMonth;
+        this.numberOfShareholders = numberOfShareholders;
     }
 
-    public void setDaysInMonth(Integer daysInMonth) {
-        this.daysInMonth = daysInMonth;
-    }
-
-    public BigDecimal getDailyRate() {
-        return dailyRate;
-    }
-
-    public void setDailyRate(BigDecimal dailyRate) {
-        this.dailyRate = dailyRate;
-    }
-
-    public BigDecimal getMonthlyIncome() {
+    public static BigDecimal CalculateMonthlyIncome(){
+        monthlyIncome = dailyRate.multiply(new BigDecimal(daysWorkedInMonth));
         return monthlyIncome;
     }
 
-    public void setMonthlyIncome(BigDecimal monthlyIncome) {
-        this.monthlyIncome = monthlyIncome;
-    }
 
 
 }
