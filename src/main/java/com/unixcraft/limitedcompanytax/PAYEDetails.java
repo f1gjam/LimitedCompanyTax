@@ -18,4 +18,6 @@ public class PAYEDetails {
         this.employersNIYearly = employersNIYearly;
     }
 
+
+    //Method needed for UK TX PAYE returning Employee Gross, NET income and Tax details. Also provide Employers NI contribution.
 }

@@ -7,15 +7,15 @@ import java.math.BigDecimal;
  */
 public class BusinessIncome {
     private static BigDecimal dailyRate = BigDecimal.ZERO;
-    private static BigDecimal monthlyIncome  = BigDecimal.ZERO;
+    public static BigDecimal monthlyIncome  = BigDecimal.ZERO;
     private static Integer daysWorkedInMonth;
-    private static Integer numberOfShareholders;
+    public static Integer numberOfShareholders;
 
     public BusinessIncome(Integer numberOfShareholders, Integer daysWorkedInMonth, BigDecimal dailyRate) {
 
         this.numberOfShareholders = numberOfShareholders;
         this.daysWorkedInMonth = daysWorkedInMonth;
-        this.numberOfShareholders = numberOfShareholders;
+        this.dailyRate = dailyRate;
     }
 
     public static BigDecimal CalculateMonthlyIncome(){

@@ -3,6 +3,8 @@ package com.unixcraft.limitedcompanytax;
 /**
  * Created by kali on 21/08/2016.
  */
+// Probably can kill this as PAYE will be used instead
+
 public class Salary {
     private double grossYearlySalary = 15000;
     private double netYearlySalary;
