@@ -1,7 +1,9 @@
 package com.unixcraft.limitedcompanytax;
 
+import com.unixcraft.limitedcompanytax.csv.CsvReader;
 import com.unixcraft.limitedcompanytax.util.TaxStatics;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -11,6 +13,14 @@ import java.math.RoundingMode;
 
 public class Main {
     public static void main(String[] args) {
+
+        CsvReader reader = new CsvReader();
+
+        try {
+            reader.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         BigDecimal monthlyIncome = TaxStatics.DAILY_RATE.multiply(new BigDecimal(TaxStatics.DAYS_WORKED_IN_MONTH));
 
