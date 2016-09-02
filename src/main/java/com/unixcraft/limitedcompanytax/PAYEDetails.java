@@ -10,7 +10,6 @@ public class PAYEDetails {
     private static BigDecimal netIncomeYearly  = BigDecimal.ZERO;
     private static BigDecimal employersNIYearly  = BigDecimal.ZERO;
 
-
     public PAYEDetails(BigDecimal grossIncomeYearly, BigDecimal netIncomeYearly, BigDecimal employersNIYearly) {
 
         this.grossIncomeYearly = grossIncomeYearly;

@@ -12,6 +12,10 @@ public final class TaxStatics {
     private TaxStatics() {
     }
 
+    public static final Integer NUMBER_OF_SHAREHOLDERS = 2;
+    public static final Integer DAYS_WORKED_IN_MONTH = 18;
+    public static final BigDecimal DAILY_RATE = new BigDecimal(400);
+
     //Expenses
     public static final BigDecimal CAR = BigDecimal.ZERO;
     public static final BigDecimal INTERNET = new BigDecimal("75");

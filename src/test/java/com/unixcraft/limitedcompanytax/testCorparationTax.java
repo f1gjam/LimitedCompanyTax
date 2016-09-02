@@ -23,10 +23,8 @@ public class testCorparationTax {
     @Test
     public void testProfitAfterTaxForBusinessIncomeMonthlyOf7000(){
 
-        CorpTaxBreakdown corpTaxBreakdown = unit.calculateCorpTax();
-
-        Assert.assertEquals(new BigDecimal("831.72"), corpTaxBreakdown.getCorporationTaxMonthly());
-        Assert.assertEquals(new BigDecimal("3326.87"), corpTaxBreakdown.getProfitAfterCorpTax());
+        Assert.assertEquals(new BigDecimal("831.72"), unit.getCorporationTaxMonthly());
+        Assert.assertEquals(new BigDecimal("3326.87"), unit.getProfitAfterCorpTax());
     }
 
 

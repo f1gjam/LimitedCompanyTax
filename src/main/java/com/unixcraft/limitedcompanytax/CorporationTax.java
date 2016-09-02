@@ -13,19 +13,18 @@ public class CorporationTax {
     private BigDecimal businessIncomeMonthly = BigDecimal.ZERO;
     private BigDecimal businessExpensesMonthly = BigDecimal.ZERO;
 
-    public CorporationTax(BigDecimal businessIncomeMonthly, BigDecimal businessExpensesMonthly) {
+    private BigDecimal monthlyProfitAfterCorpTax = BigDecimal.ZERO;
+    private BigDecimal corporationTaxMonthly = BigDecimal.ZERO;
 
+    public CorporationTax(BigDecimal businessIncomeMonthly, BigDecimal businessExpensesMonthly) {
         this.businessIncomeMonthly = businessIncomeMonthly;
         this.businessExpensesMonthly = businessExpensesMonthly;
-
+        calculateCorpTax();
     }
 
-    public CorpTaxBreakdown calculateCorpTax(){
+    public void calculateCorpTax(){
 
         BigDecimal yearlyIncome = businessIncomeMonthly.multiply(new BigDecimal("12"));
-        BigDecimal monthlyProfitAfterCorpTax = BigDecimal.ZERO;
-        BigDecimal corporationTaxMonthly = BigDecimal.ZERO;
-
         BigDecimal yearlyIncomeAfterExpenses = yearlyIncome.subtract(businessExpensesMonthly.multiply(new BigDecimal("12")));
 
         if (yearlyIncomeAfterExpenses.compareTo(SMALL_PROFITS_THRESHOLD) <= 0) {
@@ -33,9 +32,16 @@ public class CorporationTax {
             monthlyProfitAfterCorpTax = yearlyIncomeAfterExpenses.subtract(corporationTaxYearly).divide(new BigDecimal("12"));
             corporationTaxMonthly = corporationTaxYearly.divide(new BigDecimal("12"));
         }
-
-        return new CorpTaxBreakdown(monthlyProfitAfterCorpTax, corporationTaxMonthly);
     }
+
+    public BigDecimal getProfitAfterCorpTax() {
+        return monthlyProfitAfterCorpTax.setScale(2, BigDecimal.ROUND_HALF_UP);
+    }
+
+    public BigDecimal getCorporationTaxMonthly() {
+        return corporationTaxMonthly.setScale(2, BigDecimal.ROUND_HALF_UP);
+    }
+
 
 
 }
