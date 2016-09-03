@@ -1,5 +1,7 @@
 package com.unixcraft.limitedcompanytax;
 
+import com.unixcraft.limitedcompanytax.util.TaxStatics;
+
 import java.math.BigDecimal;
 
 /**
@@ -7,8 +9,8 @@ import java.math.BigDecimal;
  */
 public class CorporationTax {
 
-    private static final BigDecimal SMALL_PROFITS_RATE = new BigDecimal("20");
-    private static final BigDecimal SMALL_PROFITS_THRESHOLD = new BigDecimal("300000");
+    private static final BigDecimal SMALL_PROFITS_RATE = TaxStatics.SMALL_PROFITS_RATE;
+    private static final BigDecimal SMALL_PROFITS_THRESHOLD = TaxStatics.SMALL_PROFITS_THRESHOLD;
 
     private BigDecimal businessIncomeMonthly = BigDecimal.ZERO;
     private BigDecimal businessExpensesMonthly = BigDecimal.ZERO;
